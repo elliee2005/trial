@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Jhanelle Estacio | Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- ===== HEADER / NAVIGATION ===== -->
+    <header class="main-header">
+        <nav>
+            <a href="#home" class="logo">JE</a>
+            <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#hobbies">Hobbies</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- ===== OVERLAY FOR MOBILE MENU ===== -->
+    <div class="nav-overlay" id="navOverlay"></div>
+
+    <!-- ===== HOME / HERO SECTION ===== -->
+    <section id="home" class="hero">
+        <img src="images/me.jpg" alt="Photo of Jhanelle Estacio" class="profile-img">
+        <h1>Jhanelle P. Estacio</h1>
+        <p>A BS Information Technology, 2nd year student</p>
+        <p class="tagline">Passionate about technology and making a difference</p>
+    </section>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main>
+
+        <!-- ===== ABOUT ME ===== -->
+        <section id="about">
+            <h2>About Me</h2>
+            <p>I am a second-year student at Samar State University, under BSIT course. I am not just passionate about
+                learning technology but I'm also fascinated about life. I am an empathic person who loves to help others
+                and make a positive impact in their lives.</p>
+            <p>I believe that technology can be a powerful tool for change, and I am excited to explore its potential to
+                create innovative solutions that can improve people's lives. In my free time, I enjoy reading, writing,
+                and exploring new places.</p>
+            <p>I am also an avid learner who is always seeking new knowledge and experiences to broaden my horizons.
+                Overall, I am a driven and enthusiastic individual who is committed to making a difference in the world
+                through technology and empathy.</p>
+        </section>
+
+        <!-- ===== SKILLS ===== -->
+        <section id="skills">
+            <h2>My Skills</h2>
+            <ul class="skills-grid">
+                <li class="skill-card">
+                    <i class="fas fa-laptop-code"></i>
+                    <h3>Computer Skills</h3>
+                    <p>Proficient in MS Office, basic programming, and web development</p>
+                </li>
+                <li class="skill-card">
+                    <i class="fas fa-ear-listen"></i>
+                    <h3>Active Listening</h3>
+                    <p>Attentive and understanding in communication</p>
+                </li>
+                <li class="skill-card">
+                    <i class="fas fa-brain"></i>
+                    <h3>Problem-Solving</h3>
+                    <p>Analytical thinking and finding creative solutions</p>
+                </li>
+                <li class="skill-card">
+                    <i class="fas fa-arrows-spin"></i>
+                    <h3>Adaptability</h3>
+                    <p>Flexible and quick to learn new things</p>
+                </li>
+                <li class="skill-card">
+                    <i class="fas fa-lightbulb"></i>
+                    <h3>Critical Thinking</h3>
+                    <p>Logical reasoning and decision making</p>
+                </li>
+                <li class="skill-card">
+                    <i class="fas fa-heart"></i>
+                    <h3>Emotional Control</h3>
+                    <p>Managing emotions in challenging situations</p>
+                </li>
+            </ul>
+        </section>
+
+        <!-- ===== PROJECTS ===== -->
+        <section id="projects">
+            <h2>My Projects</h2>
+            <ul class="projects-grid">
+
+                <!-- Project 1: Personal Website -->
+                <li class="project-card">
+                    <i class="fas fa-globe project-icon"></i>
+                    <h3>Personal Website</h3>
+                    <p>A personal website built using HTML and CSS showcasing my skills and information.</p>
+                    <a href="https://elliee2005.github.io/Profile/" target="_blank" class="project-btn">
+                        <i class="fas fa-external-link-alt"></i> View Project
+                    </a>
+                    <span class="project-tag">HTML &amp; CSS</span>
+                </li>
+
+                <!-- Project 2: Guessing Game -->
+                <li class="project-card">
+                    <i class="fas fa-terminal project-icon"></i>
+                    <h3>Number Guessing Game</h3>
+                    <p>A Java console-based game where the player guesses a randomly generated number between 1 and 50.</p>
+                    <button class="screenshot-btn" onclick="openGameModal()">
+                        <i class="fas fa-images"></i> View Screenshots
+                    </button>
+                    <details class="project-details">
+                        <summary>View Project Details</summary>
+                        <ul>
+                            <li><strong>Purpose:</strong> A fun interactive game that demonstrates Java programming fundamentals</li>
+                            <li><strong>Key Features:</strong>
+                                <ul>
+                                    <li>Random number generation (1-50)</li>
+                                    <li>Input validation (handles non-numbers and out-of-range)</li>
+                                    <li>Guesses saved to a text file (UserAnswers.txt)</li>
+                                    <li>Track total valid guesses</li>
+                                </ul>
+                            </li>
+                            <li><strong>Tech Stack:</strong> Java (Console Application)</li>
+                            <li><strong>Concepts:</strong> Scanner, Random, File I/O, Exception Handling, Loops</li>
+                        </ul>
+                    </details>
+                    <span class="project-tag">Java Console</span>
+                </li>
+
+                <!-- Project 3: Smart-Ben -->
+                <li class="project-card">
+                    <i class="fas fa-hand-holding-heart project-icon"></i>
+                    <h3>Smart-Ben: Beneficiary Prioritization System</h3>
+                    <p>A community-based system that helps prioritize the most vulnerable people when aid is limited.</p>
+                    <button class="screenshot-btn" onclick="openModal()">
+                        <i class="fas fa-images"></i> View Screenshots
+                    </button>
+                    <a href="https://elliee2005.github.io/SMART-BEN/login.html" target="_blank" class="project-btn">
+                        <i class="fas fa-external-link-alt"></i> View Project
+                    </a>
+                    <details class="project-details">
+                        <summary>View Project Details</summary>
+                        <ul>
+                            <li><strong>Purpose:</strong> Faster information tracking and prioritizing vulnerable community members during aid distribution</li>
+                            <li><strong>Key Features:</strong> Resident registration, duplicate detection, auto-categorization, priority scoring, aid program management</li>
+                            <li><strong>Tech Stack:</strong> HTML, CSS, JavaScript, Firebase, Chart.js</li>
+                            <li><strong>Interfaces:</strong> Login, Registration, Residents, Dashboard, Aid Programs, History</li>
+                        </ul>
+                    </details>
+                    <span class="project-tag">Web Application</span>
+                </li>
+
+            </ul>
+        </section>
+
+        <!-- ===== HOBBIES ===== -->
+        <section id="hobbies">
+            <h2>My Hobbies &amp; Interests</h2>
+            <ul class="hobbies-grid">
+                <li class="hobby-card">
+                    <i class="fas fa-headphones"></i>
+                    <h3>Listening to Music and Podcasts</h3>
+                    <p>Enjoying various genres of music and podcasts</p>
+                </li>
+                <li class="hobby-card">
+                    <i class="fas fa-guitar"></i>
+                    <h3>Playing Guitar</h3>
+                    <p>Playing ukelele and acoustic guitar</p>
+                </li>
+                <li class="hobby-card">
+                    <i class="fas fa-book-open"></i>
+                    <h3>Reading</h3>
+                    <p>Reading books, articles, and poetry</p>
+                </li>
+                <li class="hobby-card">
+                    <i class="fas fa-user-group"></i>
+                    <h3>Hanging Out with Friends</h3>
+                    <p>Socializing and spending quality time with friends</p>
+                </li>
+            </ul>
+        </section>
+
+        <!-- ===== CONTACT ===== -->
+        <section id="contact">
+            <h2>Contact Me</h2>
+            <p>Feel free to reach out to me through my social media accounts or email.</p>
+            <address class="contact-links">
+                <a href="https://www.facebook.com/jhanelle.estacio.2025" target="_blank" class="contact-btn facebook">
+                    <i class="fab fa-facebook-f"></i> Facebook
+                </a>
+                <a href="https://www.instagram.com/jaellieee_05/" target="_blank" class="contact-btn instagram">
+                    <i class="fab fa-instagram"></i> Instagram
+                </a>
+                <a href="https://mail.google.com/mail/u/0/#all" target="_blank" class="contact-btn gmail">
+                    <i class="fas fa-envelope"></i> Gmail
+                </a>
+            </address>
+        </section>
+
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <p>&copy; 2026 Jhanelle Estacio. All Rights Reserved.</p>
+        <ul class="footer-social">
+            <li><a href="https://www.facebook.com/jhanelle.estacio.2025" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a></li>
+            <li><a href="https://www.instagram.com/jaellieee_05/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a></li>
+            <li><a href="https://mail.google.com/mail/u/0/#all" target="_blank" aria-label="Gmail"><i class="fas fa-envelope"></i></a></li>
+        </ul>
+    </footer>
+
+    <!-- ===== MODALS ===== -->
+
+    <!-- Smart-Ben Modal -->
+    <div id="screenshotModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Smart-Ben System Interfaces</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-gallery">
+                    <figure class="modal-screenshot" onclick="openFullScreen('images/smartben-login.png', 'Login Page')">
+                        <img src="images/smartben-login.png" alt="Smart-Ben Login Page">
+                        <figcaption>Login Page <span class="expand-icon">⤡</span></figcaption>
+                    </figure>
+                    <figure class="modal-screenshot" onclick="openFullScreen('images/smartben-register.png', 'Registration Page')">
+                        <img src="images/smartben-register.png" alt="Smart-Ben Registration Page">
+                        <figcaption>Registration <span class="expand-icon">⤡</span></figcaption>
+                    </figure>
+                    <figure class="modal-screenshot" onclick="openFullScreen('images/smartben-residents.png', 'Residents List')">
+                        <img src="images/smartben-residents.png" alt="Smart-Ben Residents List">
+                        <figcaption>Residents List <span class="expand-icon">⤡</span></figcaption>
+                    </figure>
+                    <figure class="modal-screenshot" onclick="openFullScreen('images/smartben-dashboard.png', 'Dashboard')">
+                        <img src="images/smartben-dashboard.png" alt="Smart-Ben Dashboard">
+                        <figcaption>Dashboard <span class="expand-icon">⤡</span></figcaption>
+                    </figure>
+                    <figure class="modal-screenshot" onclick="openFullScreen('images/smartben-programs.png', 'Aid Programs')">
+                        <img src="images/smartben-programs.png" alt="Smart-Ben Aid Programs">
+                        <figcaption>Aid Programs <span class="expand-icon">⤡</span></figcaption>
+                    </figure>
+                    <figure class="modal-screenshot" onclick="openFullScreen('images/smartben-history.png', 'History')">
+                        <img src="images/smartben-history.png" alt="Smart-Ben Distribution History">
+                        <figcaption>History <span class="expand-icon">⤡</span></figcaption>
+                    </figure>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span class="modal-hint"><i class="fas fa-info-circle"></i> Click any screenshot to view in full size</span>
+                <button class="modal-close-btn" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Smart-Ben Full-Screen Overlay -->
+    <div id="fullScreenOverlay" class="fullscreen-overlay" onclick="closeFullScreen()">
+        <button class="fullscreen-close" onclick="closeFullScreen()">&times;</button>
+        <button class="fullscreen-prev" onclick="prevImage(event)">‹</button>
+        <img id="fullScreenImage" src="" alt="Full screen screenshot">
+        <button class="fullscreen-next" onclick="nextImage(event)">›</button>
+        <div class="fullscreen-caption" id="fullScreenCaption"></div>
+        <!-- Zoom Controls -->
+        <div class="zoom-controls">
+            <button class="zoom-btn" id="zoomInBtn" onclick="zoomIn()" aria-label="Zoom in">➕</button>
+            <button class="zoom-btn" id="zoomOutBtn" onclick="zoomOut()" aria-label="Zoom out">➖</button>
+            <button class="zoom-btn" id="resetZoomBtn" onclick="resetZoom()" aria-label="Reset zoom">⟳</button>
+        </div>
+    </div>
+
+    <!-- Game Modal -->
+    <div id="gameModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Guessing Game Screenshots</h2>
+                <button class="modal-close" onclick="closeGameModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="game-screenshots">
+                    <figure class="game-screenshot-item" onclick="openGameFullScreen('images/guessing-game-code.png', 'Java Source Code')">
+                        <img src="images/guessing-game-code.png" alt="Java source code for the Guessing Game">
+                        <figcaption><i class="fas fa-code"></i> Java Source Code <span class="expand-icon">⤡</span></figcaption>
+                    </figure>
+                    <figure class="game-screenshot-item" onclick="openGameFullScreen('images/guessing-game-output.png', 'Console Output')">
+                        <img src="images/guessing-game-output.png" alt="Console output showing the game running">
+                        <figcaption><i class="fas fa-terminal"></i> Console Output <span class="expand-icon">⤡</span></figcaption>
+                    </figure>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span class="modal-hint"><i class="fas fa-info-circle"></i> Click any screenshot to view in full size</span>
+                <button class="modal-close-btn" onclick="closeGameModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Full-Screen Overlay -->
+    <div id="gameFullScreenOverlay" class="fullscreen-overlay" onclick="closeGameFullScreen()">
+        <button class="fullscreen-close" onclick="closeGameFullScreen()">&times;</button>
+        <button class="fullscreen-prev" onclick="prevGameImage(event)">‹</button>
+        <img id="gameFullScreenImage" src="" alt="Full screen screenshot">
+        <button class="fullscreen-next" onclick="nextGameImage(event)">›</button>
+        <div class="fullscreen-caption" id="gameFullScreenCaption"></div>
+        <!-- Zoom Controls -->
+        <div class="zoom-controls">
+            <button class="zoom-btn" id="zoomInBtn" onclick="zoomIn()" aria-label="Zoom in">➕</button>
+            <button class="zoom-btn" id="zoomOutBtn" onclick="zoomOut()" aria-label="Zoom out">➖</button>
+            <button class="zoom-btn" id="resetZoomBtn" onclick="resetZoom()" aria-label="Reset zoom">⟳</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
