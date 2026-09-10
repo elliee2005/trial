@@ -25,23 +25,48 @@ function closeMenu() {
 // Toggle menu on hamburger click
 hamburger.addEventListener('click', toggleMenu);
 
-// Close menu when a link is clicked
+// Handle nav link click: close menu + smooth scroll to section
 document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', closeMenu);
+    link.addEventListener('click', function (e) {
+        const targetId = this.getAttribute('href');
+
+        if (targetId && targetId.startsWith('#')) {
+            e.preventDefault();
+
+            // Close the menu
+            closeMenu();
+
+            // Wait for menu close animation, then scroll
+            setTimeout(() => {
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const navHeight = document.querySelector('.main-header').offsetHeight;
+                    const targetPosition = targetElement.offsetTop - navHeight;
+
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            }, 350);
+        } else {
+            closeMenu();
+        }
+    });
 });
 
 // Close menu on overlay click
 navOverlay.addEventListener('click', closeMenu);
 
 // Close menu on Escape key
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && navLinks.classList.contains('active')) {
         closeMenu();
     }
 });
 
 // Close menu on window resize (if screen becomes desktop)
-window.addEventListener('resize', function() {
+window.addEventListener('resize', function () {
     if (window.innerWidth > 768 && navLinks.classList.contains('active')) {
         closeMenu();
     }
@@ -61,7 +86,7 @@ function closeModal() {
     document.body.style.overflow = '';
 }
 
-document.getElementById('screenshotModal').addEventListener('click', function(e) {
+document.getElementById('screenshotModal').addEventListener('click', function (e) {
     if (e.target === this) {
         closeModal();
     }
@@ -98,8 +123,13 @@ function openFullScreen(imageSrc, caption) {
 
 function closeFullScreen() {
     document.getElementById('fullScreenOverlay').classList.remove('active');
-    document.body.style.overflow = '';
     resetZoom();
+
+    // Only unlock body scroll if the Smart-Ben modal is NOT still open
+    const modal = document.getElementById('screenshotModal');
+    if (!modal.classList.contains('active')) {
+        document.body.style.overflow = '';
+    }
 }
 
 function navigateFullScreen(direction) {
@@ -131,7 +161,7 @@ function nextImage(e) {
 }
 
 // Keyboard navigation for full-screen
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', function (e) {
     const overlay = document.getElementById('fullScreenOverlay');
     if (overlay.classList.contains('active')) {
         if (e.key === 'ArrowLeft') {
@@ -145,14 +175,14 @@ document.addEventListener('keydown', function(e) {
 });
 
 // Close full-screen when clicking outside
-document.getElementById('fullScreenOverlay').addEventListener('click', function(e) {
+document.getElementById('fullScreenOverlay').addEventListener('click', function (e) {
     if (e.target === this) {
         closeFullScreen();
     }
 });
 
 // Close modals with Escape key
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
         closeModal();
         closeFullScreen();
@@ -170,16 +200,16 @@ let touchEndX = 0;
 let touchStartY = 0;
 let touchEndY = 0;
 
-document.getElementById('fullScreenOverlay').addEventListener('touchstart', function(e) {
+document.getElementById('fullScreenOverlay').addEventListener('touchstart', function (e) {
     touchStartX = e.changedTouches[0].screenX;
     touchStartY = e.changedTouches[0].screenY;
 }, { passive: true });
 
-document.getElementById('fullScreenOverlay').addEventListener('touchmove', function(e) {
+document.getElementById('fullScreenOverlay').addEventListener('touchmove', function (e) {
     e.preventDefault();
 }, { passive: false });
 
-document.getElementById('fullScreenOverlay').addEventListener('touchend', function(e) {
+document.getElementById('fullScreenOverlay').addEventListener('touchend', function (e) {
     touchEndX = e.changedTouches[0].screenX;
     touchEndY = e.changedTouches[0].screenY;
     handleSwipe();
@@ -202,7 +232,7 @@ function handleSwipe() {
 // Double tap to close full-screen
 let lastTap = 0;
 
-document.getElementById('fullScreenImage').addEventListener('touchend', function(e) {
+document.getElementById('fullScreenImage').addEventListener('touchend', function (e) {
     const currentTime = new Date().getTime();
     const tapLength = currentTime - lastTap;
     if (tapLength < 300 && tapLength > 0) {
@@ -226,7 +256,7 @@ function closeGameModal() {
     closeGameFullScreen();
 }
 
-document.getElementById('gameModal').addEventListener('click', function(e) {
+document.getElementById('gameModal').addEventListener('click', function (e) {
     if (e.target === this) {
         closeGameModal();
     }
@@ -259,8 +289,13 @@ function openGameFullScreen(imageSrc, caption) {
 
 function closeGameFullScreen() {
     document.getElementById('gameFullScreenOverlay').classList.remove('active');
-    document.body.style.overflow = '';
     resetZoom();
+
+    // Only unlock body scroll if the Game modal is NOT still open
+    const modal = document.getElementById('gameModal');
+    if (!modal.classList.contains('active')) {
+        document.body.style.overflow = '';
+    }
 }
 
 function navigateGameFullScreen(direction) {
@@ -292,7 +327,7 @@ function nextGameImage(e) {
 }
 
 // Keyboard navigation for game full-screen
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', function (e) {
     const overlay = document.getElementById('gameFullScreenOverlay');
     if (overlay.classList.contains('active')) {
         if (e.key === 'ArrowLeft') {
@@ -305,7 +340,7 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-document.getElementById('gameFullScreenOverlay').addEventListener('click', function(e) {
+document.getElementById('gameFullScreenOverlay').addEventListener('click', function (e) {
     if (e.target === this) {
         closeGameFullScreen();
     }
@@ -320,16 +355,16 @@ let gameTouchEndX = 0;
 let gameTouchStartY = 0;
 let gameTouchEndY = 0;
 
-document.getElementById('gameFullScreenOverlay').addEventListener('touchstart', function(e) {
+document.getElementById('gameFullScreenOverlay').addEventListener('touchstart', function (e) {
     gameTouchStartX = e.changedTouches[0].screenX;
     gameTouchStartY = e.changedTouches[0].screenY;
 }, { passive: true });
 
-document.getElementById('gameFullScreenOverlay').addEventListener('touchmove', function(e) {
+document.getElementById('gameFullScreenOverlay').addEventListener('touchmove', function (e) {
     e.preventDefault();
 }, { passive: false });
 
-document.getElementById('gameFullScreenOverlay').addEventListener('touchend', function(e) {
+document.getElementById('gameFullScreenOverlay').addEventListener('touchend', function (e) {
     gameTouchEndX = e.changedTouches[0].screenX;
     gameTouchEndY = e.changedTouches[0].screenY;
     handleGameSwipe();
@@ -352,7 +387,7 @@ function handleGameSwipe() {
 // Double tap to close game full-screen
 let gameLastTap = 0;
 
-document.getElementById('gameFullScreenImage').addEventListener('touchend', function(e) {
+document.getElementById('gameFullScreenImage').addEventListener('touchend', function (e) {
     const currentTime = new Date().getTime();
     const tapLength = currentTime - gameLastTap;
     if (tapLength < 300 && tapLength > 0) {
@@ -412,7 +447,7 @@ function resetZoom() {
 }
 
 // Handle double-click to toggle zoom
-document.addEventListener('dblclick', function(e) {
+document.addEventListener('dblclick', function (e) {
     const overlay = document.getElementById('fullScreenOverlay');
     const gameOverlay = document.getElementById('gameFullScreenOverlay');
     if (overlay && overlay.classList.contains('active')) {
@@ -441,7 +476,7 @@ function setupPinchZoom(overlayId, imgId) {
     const overlay = document.getElementById(overlayId);
     if (!overlay) return;
 
-    overlay.addEventListener('touchstart', function(e) {
+    overlay.addEventListener('touchstart', function (e) {
         if (e.touches.length === 2) {
             const touch1 = e.touches[0];
             const touch2 = e.touches[1];
@@ -449,13 +484,13 @@ function setupPinchZoom(overlayId, imgId) {
         }
     }, { passive: true });
 
-    overlay.addEventListener('touchmove', function(e) {
+    overlay.addEventListener('touchmove', function (e) {
         if (e.touches.length === 2) {
             e.preventDefault();
             const touch1 = e.touches[0];
             const touch2 = e.touches[1];
             const currentDistance = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
-            
+
             if (lastTouchDistance > 0) {
                 const delta = currentDistance - lastTouchDistance;
                 const scaleFactor = 1 + delta / 300;
@@ -471,7 +506,7 @@ function setupPinchZoom(overlayId, imgId) {
         }
     }, { passive: false });
 
-    overlay.addEventListener('touchend', function(e) {
+    overlay.addEventListener('touchend', function (e) {
         lastTouchDistance = 0;
     }, { passive: true });
 }
