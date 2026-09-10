@@ -33,10 +33,8 @@ document.querySelectorAll('.nav-links a').forEach(link => {
         if (targetId && targetId.startsWith('#')) {
             e.preventDefault();
 
-            // Close the menu
             closeMenu();
 
-            // Wait for menu close animation, then scroll
             setTimeout(() => {
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
@@ -119,6 +117,13 @@ function openFullScreen(imageSrc, caption) {
     captionEl.textContent = caption;
     overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
+
+    // Reset zoom + pan when opening a new image
+    currentZoom = 1;
+    panX = 0;
+    panY = 0;
+    img.classList.remove('zoomed');
+    img.style.transform = 'scale(1)';
 }
 
 function closeFullScreen() {
@@ -176,7 +181,6 @@ document.addEventListener('keydown', function (e) {
 
 // Close full-screen when clicking outside
 document.getElementById('fullScreenOverlay').addEventListener('click', function (e) {
-    // Only close if the overlay itself was clicked (not a child element)
     if (e.target === this) {
         closeFullScreen();
     }
@@ -211,10 +215,16 @@ document.getElementById('fullScreenOverlay').addEventListener('touchstart', func
 }, { passive: true });
 
 document.getElementById('fullScreenOverlay').addEventListener('touchmove', function (e) {
-    e.preventDefault();
+    // Only prevent default when not zoomed (allows pan when zoomed)
+    if (currentZoom <= 1) {
+        e.preventDefault();
+    }
 }, { passive: false });
 
 document.getElementById('fullScreenOverlay').addEventListener('touchend', function (e) {
+    // Only handle swipe navigation when NOT zoomed in
+    if (currentZoom > 1) return;
+
     touchEndX = e.changedTouches[0].screenX;
     touchEndY = e.changedTouches[0].screenY;
     handleSwipe();
@@ -238,11 +248,10 @@ function handleSwipe() {
 let lastTap = 0;
 
 document.getElementById('fullScreenImage').addEventListener('touchend', function (e) {
-    e.stopPropagation();  // Prevent bubbling to overlay
+    e.stopPropagation();
     const currentTime = new Date().getTime();
     const tapLength = currentTime - lastTap;
     if (tapLength < 300 && tapLength > 0) {
-        // Double tap → toggle zoom
         if (currentZoom === 1) {
             zoomIn();
         } else {
@@ -296,6 +305,13 @@ function openGameFullScreen(imageSrc, caption) {
     captionEl.textContent = caption;
     overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
+
+    // Reset zoom + pan when opening a new image
+    currentZoom = 1;
+    panX = 0;
+    panY = 0;
+    img.classList.remove('zoomed');
+    img.style.transform = 'scale(1)';
 }
 
 function closeGameFullScreen() {
@@ -376,10 +392,16 @@ document.getElementById('gameFullScreenOverlay').addEventListener('touchstart', 
 }, { passive: true });
 
 document.getElementById('gameFullScreenOverlay').addEventListener('touchmove', function (e) {
-    e.preventDefault();
+    // Only prevent default when not zoomed (allows pan when zoomed)
+    if (currentZoom <= 1) {
+        e.preventDefault();
+    }
 }, { passive: false });
 
 document.getElementById('gameFullScreenOverlay').addEventListener('touchend', function (e) {
+    // Only handle swipe navigation when NOT zoomed in
+    if (currentZoom > 1) return;
+
     gameTouchEndX = e.changedTouches[0].screenX;
     gameTouchEndY = e.changedTouches[0].screenY;
     handleGameSwipe();
@@ -403,7 +425,7 @@ function handleGameSwipe() {
 let gameLastTap = 0;
 
 document.getElementById('gameFullScreenImage').addEventListener('touchend', function (e) {
-    e.stopPropagation();  // Prevent bubbling to overlay
+    e.stopPropagation();
     const currentTime = new Date().getTime();
     const tapLength = currentTime - gameLastTap;
     if (tapLength < 300 && tapLength > 0) {
@@ -417,13 +439,17 @@ document.getElementById('gameFullScreenImage').addEventListener('touchend', func
 });
 
 // ================================================================
-// ZOOM FUNCTIONALITY
+// ZOOM + PAN FUNCTIONALITY
 // ================================================================
 
 let currentZoom = 1;
 const ZOOM_MIN = 0.5;
 const ZOOM_MAX = 3;
 const ZOOM_STEP = 0.2;
+
+// Pan state
+let panX = 0;
+let panY = 0;
 
 function getActiveImage() {
     const overlay = document.getElementById('fullScreenOverlay');
@@ -437,34 +463,49 @@ function getActiveImage() {
     return null;
 }
 
+function applyTransform(img) {
+    if (!img) return;
+    img.style.transform = `translate(${panX}px, ${panY}px) scale(${currentZoom})`;
+    img.style.transformOrigin = 'center center';
+
+    // Toggle .zoomed class for cursor style
+    if (currentZoom > 1) {
+        img.classList.add('zoomed');
+    } else {
+        img.classList.remove('zoomed');
+    }
+}
+
 function zoomIn() {
     const img = getActiveImage();
     if (!img) return;
     currentZoom = Math.min(currentZoom + ZOOM_STEP, ZOOM_MAX);
-    img.style.transform = `scale(${currentZoom})`;
-    img.style.transformOrigin = 'center center';
-    img.style.cursor = 'zoom-out';
+    applyTransform(img);
 }
 
 function zoomOut() {
     const img = getActiveImage();
     if (!img) return;
     currentZoom = Math.max(currentZoom - ZOOM_STEP, ZOOM_MIN);
-    img.style.transform = `scale(${currentZoom})`;
-    img.style.transformOrigin = 'center center';
-    if (currentZoom === 1) {
-        img.style.cursor = 'zoom-in';
+    // Reset pan when zooming back to 1
+    if (currentZoom <= 1) {
+        panX = 0;
+        panY = 0;
     }
+    applyTransform(img);
 }
 
 function resetZoom() {
     const img = getActiveImage();
     if (!img) return;
     currentZoom = 1;
-    img.style.transform = 'scale(1)';
-    img.style.transformOrigin = 'center center';
-    img.style.cursor = 'default';
-    img.style.transition = 'transform 0.3s ease';  // Smooth zoom
+    panX = 0;
+    panY = 0;
+    img.style.transition = 'transform 0.3s ease';
+    applyTransform(img);
+    setTimeout(() => {
+        img.style.transition = '';
+    }, 300);
 }
 
 // Handle double-click to toggle zoom
@@ -488,60 +529,91 @@ document.addEventListener('dblclick', function (e) {
 });
 
 // ================================================================
-// PINCH-TO-ZOOM SUPPORT (Touch events)
+// PINCH-TO-ZOOM + PAN SUPPORT (Touch events)
 // ================================================================
 
 let lastTouchDistance = 0;
+let lastTouchMidX = 0;
+let lastTouchMidY = 0;
+let isPanning = false;
 
 function setupPinchZoom(overlayId, imgId) {
     const overlay = document.getElementById(overlayId);
-    if (!overlay) return;
+    const img = document.getElementById(imgId);
+    if (!overlay || !img) return;
 
     overlay.addEventListener('touchstart', function (e) {
+        // Two-finger pinch
         if (e.touches.length === 2) {
             const touch1 = e.touches[0];
             const touch2 = e.touches[1];
             lastTouchDistance = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
+            lastTouchMidX = (touch1.clientX + touch2.clientX) / 2;
+            lastTouchMidY = (touch1.clientY + touch2.clientY) / 2;
+            isPanning = false;
+        }
+        // One-finger pan (only when zoomed in)
+        else if (e.touches.length === 1 && currentZoom > 1 && e.target === img) {
+            isPanning = true;
+            lastTouchMidX = e.touches[0].clientX;
+            lastTouchMidY = e.touches[0].clientY;
         }
     }, { passive: true });
 
     overlay.addEventListener('touchmove', function (e) {
+        // Two-finger pinch
         if (e.touches.length === 2) {
             e.preventDefault();
             const touch1 = e.touches[0];
             const touch2 = e.touches[1];
             const currentDistance = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
+            const currentMidX = (touch1.clientX + touch2.clientX) / 2;
+            const currentMidY = (touch1.clientY + touch2.clientY) / 2;
 
+            // Handle zoom
             if (lastTouchDistance > 0) {
                 const delta = currentDistance - lastTouchDistance;
                 const scaleFactor = 1 + delta / 300;
-                const img = document.getElementById(imgId);
-                if (img) {
-                    const newZoom = Math.min(Math.max(currentZoom * scaleFactor, ZOOM_MIN), ZOOM_MAX);
-                    currentZoom = newZoom;
-                    img.style.transform = `scale(${currentZoom})`;
-                    img.style.transformOrigin = 'center center';
-                }
+                const newZoom = Math.min(Math.max(currentZoom * scaleFactor, ZOOM_MIN), ZOOM_MAX);
+                currentZoom = newZoom;
             }
+
+            // Handle pan with two fingers
+            panX += currentMidX - lastTouchMidX;
+            panY += currentMidY - lastTouchMidY;
+
+            // Reset pan if back to 1x zoom
+            if (currentZoom <= 1) {
+                panX = 0;
+                panY = 0;
+            }
+
+            applyTransform(img);
             lastTouchDistance = currentDistance;
+            lastTouchMidX = currentMidX;
+            lastTouchMidY = currentMidY;
+        }
+        // One-finger pan (only when zoomed in)
+        else if (e.touches.length === 1 && isPanning && currentZoom > 1) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            panX += touch.clientX - lastTouchMidX;
+            panY += touch.clientY - lastTouchMidY;
+            lastTouchMidX = touch.clientX;
+            lastTouchMidY = touch.clientY;
+            applyTransform(img);
         }
     }, { passive: false });
 
     overlay.addEventListener('touchend', function (e) {
         lastTouchDistance = 0;
+        if (e.touches.length === 0) {
+            isPanning = false;
+        }
     }, { passive: true });
 }
 
-// Prevent single-finger touches on the image from closing the full-screen
-overlay.addEventListener('touchstart', function (e) {
-    if (e.target.tagName === 'IMG' || e.target.closest('.zoom-controls') || 
-        e.target.closest('.fullscreen-prev') || e.target.closest('.fullscreen-next') || 
-        e.target.closest('.fullscreen-close') || e.target.closest('.fullscreen-caption')) {
-        e.stopPropagation();
-    }
-}, { passive: true });
-
-// Setup pinch zoom for both overlays
+// Setup pinch zoom + pan for both overlays
 setupPinchZoom('fullScreenOverlay', 'fullScreenImage');
 setupPinchZoom('gameFullScreenOverlay', 'gameFullScreenImage');
 
