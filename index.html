@@ -291,9 +291,9 @@
         <div class="fullscreen-caption" id="fullScreenCaption"></div>
         <!-- Zoom Controls -->
         <div class="zoom-controls">
-            <button class="zoom-btn" onclick="zoomIn()" aria-label="Zoom in">➕</button>
-            <button class="zoom-btn" onclick="zoomOut()" aria-label="Zoom out">➖</button>
-            <button class="zoom-btn" onclick="resetZoom()" aria-label="Reset zoom">⟳</button>
+            <button class="zoom-btn" onclick="event.stopPropagation(); zoomIn()" aria-label="Zoom in">➕</button>
+            <button class="zoom-btn" onclick="event.stopPropagation(); zoomOut()" aria-label="Zoom out">➖</button>
+            <button class="zoom-btn" onclick="event.stopPropagation(); resetZoom()" aria-label="Reset zoom">⟳</button>
         </div>
     </div>
 
@@ -337,9 +337,9 @@
         <div class="fullscreen-caption" id="gameFullScreenCaption"></div>
         <!-- Zoom Controls -->
         <div class="zoom-controls">
-            <button class="zoom-btn" onclick="zoomIn()" aria-label="Zoom in">➕</button>
-            <button class="zoom-btn" onclick="zoomOut()" aria-label="Zoom out">➖</button>
-            <button class="zoom-btn" onclick="resetZoom()" aria-label="Reset zoom">⟳</button>
+            <button class="zoom-btn" onclick="event.stopPropagation(); zoomIn()" aria-label="Zoom in">➕</button>
+            <button class="zoom-btn" onclick="event.stopPropagation(); zoomOut()" aria-label="Zoom out">➖</button>
+            <button class="zoom-btn" onclick="event.stopPropagation(); resetZoom()" aria-label="Reset zoom">⟳</button>
         </div>
     </div>
 
