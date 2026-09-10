@@ -176,9 +176,14 @@ document.addEventListener('keydown', function (e) {
 
 // Close full-screen when clicking outside
 document.getElementById('fullScreenOverlay').addEventListener('click', function (e) {
+    // Only close if the overlay itself was clicked (not a child element)
     if (e.target === this) {
         closeFullScreen();
     }
+});
+
+document.getElementById('fullScreenImage').addEventListener('click', function (e) {
+    e.stopPropagation();
 });
 
 // Close modals with Escape key
@@ -229,14 +234,20 @@ function handleSwipe() {
     }
 }
 
-// Double tap to close full-screen
+// Double tap to toggle zoom (instead of closing)
 let lastTap = 0;
 
 document.getElementById('fullScreenImage').addEventListener('touchend', function (e) {
+    e.stopPropagation();  // Prevent bubbling to overlay
     const currentTime = new Date().getTime();
     const tapLength = currentTime - lastTap;
     if (tapLength < 300 && tapLength > 0) {
-        closeFullScreen();
+        // Double tap → toggle zoom
+        if (currentZoom === 1) {
+            zoomIn();
+        } else {
+            resetZoom();
+        }
     }
     lastTap = currentTime;
 });
@@ -346,6 +357,10 @@ document.getElementById('gameFullScreenOverlay').addEventListener('click', funct
     }
 });
 
+document.getElementById('gameFullScreenImage').addEventListener('click', function (e) {
+    e.stopPropagation();
+});
+
 // ================================================================
 // SWIPE SUPPORT FOR GAME FULL-SCREEN
 // ================================================================
@@ -384,14 +399,19 @@ function handleGameSwipe() {
     }
 }
 
-// Double tap to close game full-screen
+// Double tap to toggle zoom (instead of closing)
 let gameLastTap = 0;
 
 document.getElementById('gameFullScreenImage').addEventListener('touchend', function (e) {
+    e.stopPropagation();  // Prevent bubbling to overlay
     const currentTime = new Date().getTime();
     const tapLength = currentTime - gameLastTap;
     if (tapLength < 300 && tapLength > 0) {
-        closeGameFullScreen();
+        if (currentZoom === 1) {
+            zoomIn();
+        } else {
+            resetZoom();
+        }
     }
     gameLastTap = currentTime;
 });
@@ -444,6 +464,7 @@ function resetZoom() {
     img.style.transform = 'scale(1)';
     img.style.transformOrigin = 'center center';
     img.style.cursor = 'default';
+    img.style.transition = 'transform 0.3s ease';  // Smooth zoom
 }
 
 // Handle double-click to toggle zoom
@@ -510,6 +531,15 @@ function setupPinchZoom(overlayId, imgId) {
         lastTouchDistance = 0;
     }, { passive: true });
 }
+
+// Prevent single-finger touches on the image from closing the full-screen
+overlay.addEventListener('touchstart', function (e) {
+    if (e.target.tagName === 'IMG' || e.target.closest('.zoom-controls') || 
+        e.target.closest('.fullscreen-prev') || e.target.closest('.fullscreen-next') || 
+        e.target.closest('.fullscreen-close') || e.target.closest('.fullscreen-caption')) {
+        e.stopPropagation();
+    }
+}, { passive: true });
 
 // Setup pinch zoom for both overlays
 setupPinchZoom('fullScreenOverlay', 'fullScreenImage');
